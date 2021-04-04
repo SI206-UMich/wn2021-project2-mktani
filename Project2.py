@@ -7,6 +7,8 @@ import unittest
 
 
 def get_titles_from_search_results(filename):
+    
+
     """
     Write a function that creates a BeautifulSoup object on "search_results.htm". Parse
     through the object and return a list of tuples containing book titles (as printed on the Goodreads website) 
@@ -15,10 +17,24 @@ def get_titles_from_search_results(filename):
     [('Book title 1', 'Author 1'), ('Book title 2', 'Author 2')...]
     """
 
-    pass
+    book_list = []
+    author_list = []
+    dir = os.path.dirname(__file__)
+    with open(os.path.join(dir, filename)) as fp:
+        soup = BeautifulSoup(fp, 'html.parser')
+        books = soup.find_all('a', class_= 'bookTitle')
+        authors = soup.find_all('a', class_= 'authorName')
+        for book in books:
+            book_list.append(book.text.strip())
+        for author in authors:
+            author_list.append(author.text.strip())
+        title_list = list(zip(book_list, author_list))
+    return title_list
 
 
 def get_search_links():
+
+    
     """
     Write a function that creates a BeautifulSoup object after retrieving content from
     "https://www.goodreads.com/search?q=fantasy&qid=NwUsLiA2Nc". Parse through the object and return a list of
@@ -32,7 +48,18 @@ def get_search_links():
 
     """
 
-    pass
+    url_list = []
+    base_url = 'https://www.goodreads.com'
+    url = 'https://www.goodreads.com/search?q=fantasy&qid=NwUsLiA2Nc'
+    resp = requests.get(url)
+    if resp.ok:
+        soup = BeautifulSoup(resp.content, 'html.parser')
+        table = soup.find('table', class_= 'tableList')
+        books = table.find_all('a', class_= 'bookTitle')
+        for book in books:
+            url = book.get('href', None)
+            url_list.append(base_url + url)
+    return url_list[:10]
 
 
 def get_book_summary(book_url):
