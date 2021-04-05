@@ -6,8 +6,10 @@ import csv
 import unittest
 
 
+
+
 def get_titles_from_search_results(filename):
-    
+
 
     """
     Write a function that creates a BeautifulSoup object on "search_results.htm". Parse
@@ -16,6 +18,8 @@ def get_titles_from_search_results(filename):
 
     [('Book title 1', 'Author 1'), ('Book title 2', 'Author 2')...]
     """
+
+
 
     book_list = []
     author_list = []
@@ -33,8 +37,6 @@ def get_titles_from_search_results(filename):
 
 
 def get_search_links():
-
-    
     """
     Write a function that creates a BeautifulSoup object after retrieving content from
     "https://www.goodreads.com/search?q=fantasy&qid=NwUsLiA2Nc". Parse through the object and return a list of
@@ -46,8 +48,7 @@ def get_search_links():
     your list, and , and be sure to append the full path to the URL so that the url is in the format 
     “https://www.goodreads.com/book/show/kdkd".
 
-    """
-
+    """  
     url_list = []
     base_url = 'https://www.goodreads.com'
     url = 'https://www.goodreads.com/search?q=fantasy&qid=NwUsLiA2Nc'
@@ -75,7 +76,6 @@ def get_book_summary(book_url):
     You can easily capture CSS selectors with your browser's inspector window.
     Make sure to strip() any newlines from the book title and number of pages.
     """
-
     resp = requests.get(book_url)
     if resp.ok:
         soup = BeautifulSoup(resp.content, 'html.parser')
@@ -137,6 +137,7 @@ def write_csv(data, filename):
     This function should not return anything.
     """
     dir = os.path.dirname(__file__)
+
     outFile = open(os.path.join(dir, filename), "w")
     csv_writer = csv.writer(outFile)
     csv_writer.writerow(['Book Title', 'Author Name'])
@@ -155,6 +156,7 @@ def extra_credit(filepath):
     You do not have to write test cases for this function.
     """
     pass
+
 
 class TestCases(unittest.TestCase):
 
@@ -216,6 +218,7 @@ class TestCases(unittest.TestCase):
             self.assertIsInstance(summary[0], str)
             self.assertIsInstance(summary[1], str)
 
+
             # check that the third element in the tuple, i.e. pages is an int
             self.assertIsInstance(summary[2], int)
 
@@ -249,6 +252,7 @@ class TestCases(unittest.TestCase):
 
 
 
+
     def test_write_csv(self):
         # call get_titles_from_search_results on search_results.htm and save the result to a variable
         dir = os.path.dirname(__file__)
@@ -277,6 +281,7 @@ class TestCases(unittest.TestCase):
 if __name__ == '__main__':
     print(extra_credit("extra_credit.htm"))
     unittest.main(verbosity=2)
+
 
 
 
